@@ -1,0 +1,88 @@
+1. demonstrate handling of file upload
+
+	The move_uploaded_file() function moves the uploaded file to a new location. The move_uploaded_file() function checks internally if the file is uploaded thorough the POST request.
+	by using this code move_uploaded_file($_FILES['profpic']['tmp_name'], $target_path)  i can handle a file upload
+
+2. read a file
+	$filepath="./uploads/4ed65c090264a.png";
+	$imageData = base64_encode(file_get_contents($filepath));
+
+	// Format the image SRC:  data:{mime};base64,{data};
+	$src = 'data: '.mime_content_type($image).';base64,'.$imageData;
+
+	// Echo out a sample image
+	echo '<img src="' . $src . '">';
+
+3. demonstrate use of class and abstract class
+	Abstract classes are the classes in which at least one method is abstract. Unlike C++ abstract classes in PHP are declared with the help of abstract keyword. Use of abstract classes are that all base classes implementing this class should give implementation of abstract methods declared in parent class
+	
+	
+We use abstract classes and methods when we need to commit the child classes to certain methods that they inherit from the parent class but we cannot commit about the code that should be written inside the methods. An abstract class is a class that has at least one abstract method.
+
+
+4.resize a image
+	
+	function resize($newWidth, $targetFile, $originalFile) {
+
+    		$info = getimagesize($originalFile);
+    		$mime = $info['mime'];
+
+    	switch ($mime) {
+            case 'image/jpeg':
+                    $image_create_func = 'imagecreatefromjpeg';
+                    $image_save_func = 'imagejpeg';
+                    $new_image_ext = 'jpg';
+                    break;
+
+            case 'image/png':
+                    $image_create_func = 'imagecreatefrompng';
+                    $image_save_func = 'imagepng';
+                    $new_image_ext = 'png';
+                    break;
+
+            case 'image/gif':
+                    $image_create_func = 'imagecreatefromgif';
+                    $image_save_func = 'imagegif';
+                    $new_image_ext = 'gif';
+                    break;
+
+            default: 
+                    throw new Exception('Unknown image type.');
+    }
+
+    $img = $image_create_func($originalFile);
+    list($width, $height) = getimagesize($originalFile);
+
+    $newHeight = ($height / $width) * $newWidth;
+    $tmp = imagecreatetruecolor($newWidth, $newHeight);
+    imagecopyresampled($tmp, $img, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
+
+    if (file_exists($targetFile)) {
+            unlink($targetFile);
+    }
+    $image_save_func($tmp, "$targetFile.$new_image_ext");
+	}
+
+
+     new_image=resize(100,"uploads/newimage.jpg","./uploads/originam_image.jpg");
+
+
+
+
+
+5.
+	$final_array=[1, 9, 16, 4, 22, 31, 6, 19, 48, 3, 90, 61, 88 ,55, 27];
+	$result = explode(',', $final_array);
+
+	$odd= array();
+	$even= array();
+
+	foreach ($result as $key => $value) {
+    		if ($key % 2 == 0) {
+        	$even[] = $value;
+    		} else {
+        	$odd[] = $value;
+    		}
+		}
+	$output_array=array_merge($even, $odd); 
+	
